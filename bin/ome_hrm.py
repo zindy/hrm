@@ -123,7 +123,9 @@ def gen_children(conn, id_str):
     if obj_type == 'Experimenter':
         children_wrapper = conn.listProjects(oid)
     elif obj_type == 'ExperimenterGroup':
-        children_wrapper = None  # FIXME
+        # as of now, there is no *direct* way to retrieve the children of a
+        # group object, so we simply refuse to handle this request:
+        raise TypeError('gen_children() not implemented for groups!')
     else:
         children_wrapper = obj.listChildren()
     # now recurse into children:
