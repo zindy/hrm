@@ -215,8 +215,8 @@ def omero_to_hrm(conn, id_str, dest):
     we should check if older ones could have such a file if they were uploaded
     with the "archive" option.
     """
-    # FIXME: group switching required!!
     _, gid, obj_type, image_id = id_str.split(':')
+    conn.SERVICE_OPTS.setOmeroGroup(gid)
     # as we're downloading original files, we need to crop away the additional
     # suffix that OMERO adds to the name in case the image belongs to a
     # fileset, enclosed in rectangular brackets "[...]", e.g. the file with the
