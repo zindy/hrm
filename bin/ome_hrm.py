@@ -269,9 +269,8 @@ def hrm_to_omero(conn, id_str, image_file):
     id_str: str - the ID of the target dataset in OMERO (e.g. "G:7:Dataset:23")
     image_file: str - the local image file including the full path
     """
-    # FIXME: group switching required!!
     _, gid, obj_type, dset_id = id_str.split(':')
-    conn.SERVICE_OPTS.setOmeroGroup(gid)
+    ### conn.SERVICE_OPTS.setOmeroGroup(gid)
     # we have to create the annotations *before* we actually upload the image
     # data itself and link them to the image during the upload - the other way
     # round is not possible right now as the CLI wrapper (see below) doesn't
@@ -299,16 +298,16 @@ def hrm_to_omero(conn, id_str, image_file):
     # NOTE: cli._client should be replaced with cli.set_client() when switching
     # to support for OMERO 5.1 and later only:
     cli._client = conn.c
-    # commandline group switching works like this:
-    # bin/omero sessions --server SRV --user USR --password PAS group gid
-    session_args = ["sessions", "group", gid]
-    print("session_args: " + str(session_args))
-    cli.invoke(session_args)
+    # surprisingly, the "import" command expects the group *NAME*, not the ID:
+    group_name = conn.getObject('ExperimenterGroup', gid).getName()
     import_args = ["import"]
+    import_args.extend(['-g', group_name])
     import_args.extend(['-d', dset_id])
+
     if comment is not None:
         import_args.extend(['--annotation_ns', namespace])
         import_args.extend(['--annotation_text', comment])
+
     #### for ann_id in annotations:
     ####     import_args.extend(['--annotation_link', str(ann_id)])
     import_args.append(image_file)
