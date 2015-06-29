@@ -311,7 +311,7 @@ def hrm_to_omero(conn, id_str, image_file):
     #### for ann_id in annotations:
     ####     import_args.extend(['--annotation_link', str(ann_id)])
     import_args.append(image_file)
-    # print("import_args: " + str(import_args))
+    print("import_args: " + str(import_args))
     cli.invoke(import_args)
 
 
