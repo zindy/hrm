@@ -261,8 +261,9 @@ def omero_to_hrm(conn, id_str, dest):
     =======
     True in case the download was successful, False otherwise.
     """
-    # FIXME: group switching required!!
     _, gid, obj_type, image_id = id_str.split(':')
+    # switch the group of the session
+    conn.setGroupForSession(gid)
     # check if dest is a directory, rewrite it otherwise:
     if not os.path.isdir(dest):
         dest = os.path.dirname(dest)
