@@ -19,6 +19,9 @@ echo "Set up HRM for release **IN PLACE**... $PROJECT_DIR"
 # Update composer itself
 ${PROJECT_DIR}/composer.phar self-update
 
+# Update
+${PROJECT_DIR}/composer.phar update --no-dev --working-dir=${PROJECT_DIR}
+
 # Make sure all third-party dependencies exist and are up-to-date
 if [ ! -d "${PROJECT_DIR}/vendor" ]; then
     # Install
